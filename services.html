@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services - Calming Currents Beauty Spa</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container header">
+    <div class="logo">
+      <svg width="120" height="50" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="35" font-family="Dancing Script, cursive" font-size="32" fill="#264B38">Calming Currents</text>
+      </svg>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html" class="active">Services</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="blog.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="container services-section">
+  <h2 class="center">Our Services</h2>
+  <p class="center">Click any service to book instantly</p>
+
+  <div class="services-grid">
+    <div class="service-card lightbox-img" data-service="Gents Manicure and Pedicure" data-price="R499.00">
+      <img src="assets/service1.jpg" alt="Gents Manicure & Pedicure">
+      <h4>Gents Manicure & Pedicure</h4>
+      <p>R499.00</p>
+      <a href="booking.html?service=Gents+Manicure+and+Pedicure" class="btn btn-primary book-service">Book Now</a>
+    </div>
+
+    <div class="service-card lightbox-img" data-service="Deep Tissue Massage" data-price="R699.00">
+      <img src="assets/service2.jpg" alt="Deep Tissue Massage">
+      <h4>Deep Tissue Massage</h4>
+      <p>R699.00</p>
+      <a href="booking.html?service=Deep+Tissue+Massage" class="btn btn-primary book-service">Book Now</a>
+    </div>
+
+    <div class="service-card lightbox-img" data-service="Aromatherapy Massage" data-price="R550.00">
+      <img src="assets/service3.jpg" alt="Aromatherapy Massage">
+      <h4>Aromatherapy Massage</h4>
+      <p>R550.00</p>
+      <a href="booking.html?service=Aromatherapy+Massage" class="btn btn-primary book-service">Book Now</a>
+    </div>
+
+    <div class="service-card lightbox-img" data-service="Cupping Massage" data-price="R750.00">
+      <img src="assets/service4.jpg" alt="Cupping Massage">
+      <h4>Cupping Massage</h4>
+      <p>R750.00</p>
+      <a href="booking.html?service=Cupping+Massage" class="btn btn-primary book-service">Book Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+  <img id="lightbox-img" src="">
+</div>
+
+<footer>
+  <div class="container footer">
+    <p>© 2026 Calming Currents Beauty Spa | Mobile Spa Services</p>
+    <p>WhatsApp: <a href="https://wa.me/0697507959">0697507959</a></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
