@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Service - Calming Currents Beauty Spa</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="container header">
+    <div class="logo">
+      <svg width="120" height="50" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="35" font-family="Dancing Script, cursive" font-size="32" fill="#264B38">Calming Currents</text>
+      </svg>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="blog.html">Reviews</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="container booking-section">
+  <h2 class="center">Book Your Service</h2>
+  <p class="center">Please fill out the form below. Your selected service is pre-filled.</p>
+
+  <form id="booking-form" class="booking-form">
+    <label for="service">Service:</label>
+    <input type="text" id="service" name="service" readonly>
+
+    <label for="price">Price:</label>
+    <input type="text" id="price" name="price" readonly>
+
+    <label for="date">Preferred Date:</label>
+    <input type="date" id="date" name="date" required>
+
+    <label for="time">Preferred Time:</label>
+    <input type="time" id="time" name="time" required>
+
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" name="name" placeholder="Your Name" required>
+
+    <label for="phone">Phone Number:</label>
+    <input type="text" id="phone" name="phone" placeholder="Your Phone" required>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" placeholder="Your Address" required>
+
+    <p><strong>Call-Out Fee:</strong> R200.00</p>
+
+    <button type="submit" class="btn btn-primary">Confirm Booking</button>
+    <button type="button" id="whatsapp-btn" class="btn btn-outline">Book via WhatsApp</button>
+  </form>
+</section>
+
+<footer>
+  <div class="container footer">
+    <p>© 2026 Calming Currents Beauty Spa | Mobile Spa Services</p>
+    <p>WhatsApp: <a href="https://wa.me/0697507959">0697507959</a></p>
+  </div>
+</footer>
+
+<script src="js/script.js"></script>
+</body>
+</html>
