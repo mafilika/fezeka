@@ -25,10 +25,12 @@ header {
   border-bottom: 1px solid #D6CF94;
 }
 
-header .logo svg text {
-  font-family: 'Dancing Script', cursive;
-  font-size: 32px;
-  fill: #264B38;
+.logo img {
+  width: 70px;           /* adjust for bigger/smaller */
+  height: 70px;
+  border-radius: 50%;    /* makes it a circle */
+  object-fit: cover;     /* fills circle beautifully */
+  display: block;
 }
 
 .nav-links {
