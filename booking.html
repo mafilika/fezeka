@@ -30,6 +30,10 @@
   </div>
 </header>
 
+  // Extract service from URL
+const params = new URLSearchParams(window.location.search);
+const selectedService = params.get("service");
+  
 <section class="container booking-section">
   <h2 class="center">Book Your Service</h2>
   <p class="center">Please fill out the form below. Your selected service is pre-filled.</p>
