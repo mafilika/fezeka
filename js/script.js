@@ -63,3 +63,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+let priceMap = {
+  "Gents Manicure and Pedicure": 499,
+  "Deep Tissue Massage": 699,
+  "Aromatherapy Massage": 550,
+  "Cupping Massage": 750
+};
+
+let callOutFee = 200;
+
+// Fill form automatically if service was clicked
+if (selectedService && priceMap[selectedService]) {
+  document.getElementById("service").value = selectedService;
+  document.getElementById("price").value = "R" + priceMap[selectedService] + ".00";
+
+  let total = priceMap[selectedService] + callOutFee;
+  document.getElementById("total").value = "R" + total + ".00";
+}
