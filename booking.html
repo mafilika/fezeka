@@ -61,6 +61,33 @@
     <button type="submit" class="btn btn-primary">Confirm Booking</button>
     <button type="button" id="whatsapp-btn" class="btn btn-outline">Book via WhatsApp</button>
   </form>
+  <script>
+    // --- 1) read ?service= from the URL
+    const params = new URLSearchParams(window.location.search);
+    const serviceFromUrl = params.get('service');
+
+    // --- 2) map any friendly alternate slugs to the exact option values (optional)
+    // Use this if you ever want multiple aliases; for now it's identity mapping
+    const validSlugs = new Set([
+      'back-exfoliation','aromatherapy-massage','full-body','deep-cleansing','gel-soak','deep-cleansing','gents-manicure','deep-tissue','manicure','cupping','head-massage'
+    ]);
+
+    // --- 3) set the dropdown value if provided and valid
+    const select = document.getElementById('serviceSelect');
+    if (serviceFromUrl && validSlugs.has(serviceFromUrl)) {
+      select.value = serviceFromUrl;
+    }
+
+    // --- 4) store the page the user came from as origin (useful for tracking)
+    // e.g. /service.html#manicure or full URL
+    document.getElementById('origin').value = document.referrer || window.location.href;
+
+    // --- 5) OPTIONAL: show a friendly message if unknown service
+    if (serviceFromUrl && !validSlugs.has(serviceFromUrl)) {
+      // if service unknown, you could show a note. For now we just leave the dropdown untouched.
+      console.warn('Unknown service requested:', serviceFromUrl);
+    }
+  </script>
 </section>
 
 <footer>
