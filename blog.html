@@ -35,26 +35,90 @@
     </nav>
   </div>
 </header>
-
-<section class="container blog-section">
-  <h2 class="center">Client Reviews & Testimonials</h2>
-
-  <div class="blog-grid">
-    <div class="blog-card">
-      <p>"Amazing experience! The therapist arrived on time and the massage was perfect."</p>
-      <h4>- Sarah M.</h4>
-    </div>
-    <div class="blog-card">
-      <p>"Luxury spa at home! Highly recommend for anyone stressed out."</p>
-      <h4>- Linda K.</h4>
-    </div>
-    <div class="blog-card">
-      <p>"Deep tissue massage relieved all my back pain. Will book again."</p>
-      <h4>- Mark D.</h4>
-    </div>
+<!-- Blog Section Start -->
+<section id="blog-section" style="padding:2rem; max-width:900px; margin:auto;">
+  <h2 style="color:#d6336c; text-align:center;">Latest Blog Posts</h2>
+  <div id="blog-container">
+    <p style="text-align:center;">Loading blog posts...</p>
   </div>
 </section>
 
+<!-- Blog Structured Data Schema -->
+<script type="application/ld+json" id="blog-schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Calming Currents Blog",
+  "url": "https://calmingcurrentsbeautyspa.com/about",
+  "description": "Expert beauty and wellness tips from Calming Currents Beauty Spa",
+  "blogPost": []
+}
+</script>
+
+<script>
+  // Contentful credentials
+  const SPACE_ID = "YOUR_SPACE_ID";
+  const ACCESS_TOKEN = "YOUR_ACCESS_TOKEN";
+
+  async function fetchBlogPosts() {
+    const res = await fetch(`https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&order=-fields.publishedDate`);
+    const data = await res.json();
+    return data.items.map(item => ({
+      title: item.fields.title,
+      content: item.fields.content,
+      date: item.fields.publishedDate,
+      slug: item.fields.slug
+    }));
+  }
+
+  async function renderBlogPosts() {
+    const posts = await fetchBlogPosts();
+    const container = document.getElementById("blog-container");
+    const schema = document.getElementById("blog-schema");
+
+    if(posts.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>No blog posts available at the moment.</p>";
+      return;
+    }
+
+    container.innerHTML = ""; // clear loading
+
+    const schemaPosts = [];
+
+    posts.forEach(post => {
+      const postEl = document.createElement("article");
+      postEl.style.borderBottom = "1px solid #ddd";
+      postEl.style.padding = "1rem 0";
+      postEl.innerHTML = `
+        <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
+        <small>Published: ${new Date(post.date).toLocaleDateString()}</small>
+        <p>${post.content}</p>
+      `;
+      container.appendChild(postEl);
+
+      // Add to schema
+      schemaPosts.push({
+        "@type": "BlogPosting",
+        "headline": post.title,
+        "datePublished": post.date,
+        "url": `https://calmingcurrentsbeautyspa.com/about#${post.slug}`,
+        "author": {
+          "@type": "Person",
+          "name": "Calming Currents Beauty Spa"
+        },
+        "description": post.content.substring(0, 150)
+      });
+    });
+
+    // Update schema JSON
+    const schemaJson = JSON.parse(schema.innerHTML);
+    schemaJson.blogPost = schemaPosts;
+    schema.innerHTML = JSON.stringify(schemaJson);
+  }
+
+  renderBlogPosts();
+</script>
+<!-- Blog Section End -->
 <footer>
   <div class="container footer">
     <p>© 2026 Calming Currents Beauty Spa | Mobile Spa Services Are Available | 391 Main Avenue, Ferndale, Randburg</p>
