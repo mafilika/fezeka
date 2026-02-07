@@ -120,19 +120,19 @@ const excerpt = text.length > excerptLength
 `;
       container.appendChild(postEl);
 
-      const btn = postEl.querySelector(".read-more-btn");
-const textEl = postEl.querySelector(".post-text");
-
+      const btn = postEl.querySelector(".read-more");
 if (btn) {
-  let expanded = false;
-
   btn.addEventListener("click", () => {
-    expanded = !expanded;
+    const excerptP = postEl.querySelector(".excerpt");
+    const fullP = postEl.querySelector(".full-text");
 
-    textEl.textContent = expanded ? text : previewText;
-    btn.textContent = expanded ? "Read Less ↑" : "Read More →";
+    const expanded = fullP.style.display === "block";
+
+    excerptP.style.display = expanded ? "block" : "none";
+    fullP.style.display = expanded ? "none" : "block";
+    btn.textContent = expanded ? "Read More" : "Read Less";
   });
-    }
+}
 
       // Add to schema
       schemaPosts.push({
