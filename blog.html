@@ -90,9 +90,15 @@
       postEl.style.borderBottom = "1px solid #ddd";
       postEl.style.padding = "1rem 0";
       // convert Contentful rich text → plain text
-const text = post.content.content
+
+      const text = post.content.content
   .map(block => block.content?.map(c => c.value).join("") || "")
   .join(" ");
+
+const excerptLength = 180;
+const excerpt = text.length > excerptLength
+  ? text.substring(0, excerptLength) + "..."
+  : text;
 
       postEl.innerHTML = `
   <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
