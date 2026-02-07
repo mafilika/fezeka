@@ -94,10 +94,23 @@ const text = post.content.content
   .map(block => block.content?.map(c => c.value).join("") || "")
   .join(" ");
 
-postEl.innerHTML = `
+      postEl.innerHTML = `
   <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
   <small>Published: ${new Date(post.date).toLocaleDateString()}</small>
-  <p>${text}</p>
+
+  <p class="excerpt">${excerpt}</p>
+  <p class="full-text" style="display:none;">${text}</p>
+
+  ${text.length > excerptLength 
+    ? `<button class="read-more" style="
+        margin-top:0.5rem;
+        background:none;
+        border:none;
+        color:#0a3d62;
+        font-weight:600;
+        cursor:pointer;
+      ">Read More</button>`
+    : ""}
 `;
       container.appendChild(postEl);
 
