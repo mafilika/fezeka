@@ -89,11 +89,16 @@
       const postEl = document.createElement("article");
       postEl.style.borderBottom = "1px solid #ddd";
       postEl.style.padding = "1rem 0";
-      postEl.innerHTML = `
-        <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
-        <small>Published: ${new Date(post.date).toLocaleDateString()}</small>
-        <p>${post.content}</p>
-      `;
+      // convert Contentful rich text → plain text
+const text = post.content.content
+  .map(block => block.content?.map(c => c.value).join("") || "")
+  .join(" ");
+
+postEl.innerHTML = `
+  <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
+  <small>Published: ${new Date(post.date).toLocaleDateString()}</small>
+  <p>${text}</p>
+`;
       container.appendChild(postEl);
 
       // Add to schema
@@ -106,7 +111,7 @@
           "@type": "Person",
           "name": "Calming Currents Beauty Spa"
         },
-        "description": post.content.substring(0, 150)
+        "description": text.substring(0, 150)
       });
     });
 
