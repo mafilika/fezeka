@@ -173,6 +173,20 @@ async function renderBlogPosts(){
 
     container.appendChild(el);
 
+    const btn = postEl.querySelector(".read-more");
+if (btn) {
+  btn.addEventListener("click", () => {
+    const excerptP = postEl.querySelector(".excerpt");
+    const fullP = postEl.querySelector(".full-text");
+
+    const expanded = fullP.style.display === "block";
+
+    excerptP.style.display = expanded ? "block" : "none";
+    fullP.style.display = expanded ? "none" : "block";
+    btn.textContent = expanded ? "Read More" : "Read Less";
+  });
+        }
+
 
     /* Schema entry */
     schemaPosts.push({
