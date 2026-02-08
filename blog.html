@@ -135,7 +135,7 @@ async function fetchBlogPosts() {
       title: item.fields.title,
       date: item.fields.publishedDate,
       slug: item.fields.slug,
-      excerpt: text.substring(0, 160) + "..."
+      excerpt: text.substring(0, 270) + "..."
     };
   });
 }
