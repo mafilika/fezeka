@@ -1,172 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJRZNVXCH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  gtag('config', 'G-SXJRZNVXCH');
-</script>
-  
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reviews & Blog - Calming Currents Beauty Spa</title>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <title>Wellness Blog | Calming Currents Beauty Spa</title>
+  <meta name="description" content="Massage therapy tips, wellness advice, and spa education from Calming Currents Beauty Spa Johannesburg."/>
+
+  <!-- Blog List Schema -->
+  <script type="application/ld+json" id="blog-schema">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Calming Currents Beauty Spa Blog",
+    "blogPost": []
+  }
+  </script>
+
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin:auto;
+      padding:2rem;
+      line-height:1.7;
+      background:#fff;
+      color:#333;
+    }
+
+    h2{
+      text-align:center;
+      color:#0a3d62;
+      margin-bottom:2rem;
+    }
+
+    article{
+      border-bottom:1px solid #ddd;
+      padding:1.5rem 0;
+    }
+
+    .date{
+      color:#888;
+      font-size:0.9rem;
+      margin-bottom:0.7rem;
+      display:block;
+    }
+
+    .excerpt{
+      margin-bottom:0.7rem;
+    }
+
+    .read-more{
+      color:#0a3d62;
+      font-weight:bold;
+      text-decoration:none;
+    }
+
+    .read-more:hover{
+      text-decoration:underline;
+    }
+  </style>
 </head>
+
+
 <body>
 
-<header>
-  <div class="container header">
-    <div class="logo">
-  <img src="https://images.ctfassets.net/09muo917z9ra/5EhOAmkNph6p93Y75Ai807/e4c70ddfdb2631d7ab2caf885019732c/Gohn-s_bakery_studio.png" alt="Calming Currents Logo">
-    </div>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="blog.html" class="active">Reviews</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
-<!-- Blog Section Start -->
-<section id="blog-section" style="padding:2rem; max-width:900px; margin:auto;">
-  <h2 style="color:#d6336c; text-align:center;">Latest Blog Posts</h2>
+<section id="blog-section">
+  <h2>Wellness & Massage Blog</h2>
+
   <div id="blog-container">
-    <p style="text-align:center;">Loading blog posts...</p>
+    Loading posts...
   </div>
 </section>
 
-<!-- Blog Structured Data Schema -->
-<script type="application/ld+json" id="blog-schema">
-{
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Calming Currents Blog",
-  "url": "https://calmingcurrentsbeautyspa.com/about",
-  "description": "Expert beauty and wellness tips from Calming Currents Beauty Spa",
-  "blogPost": []
-}
-</script>
 
 <script>
-  // Contentful credentials
-  const SPACE_ID = "09muo917z9ra";
-  const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
+/* =========================
+   CONTENTFUL SETTINGS
+========================= */
+const SPACE_ID = "09muo917z9ra";
+const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
 
-  async function fetchBlogPosts() {
-    const res = await fetch(`https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&order=-fields.publishedDate`);
-    const data = await res.json();
-    return data.items.map(item => ({
+
+/* =========================
+   FETCH POSTS
+========================= */
+async function fetchBlogPosts() {
+
+  const res = await fetch(
+    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&order=-fields.publishedDate`
+  );
+
+  const data = await res.json();
+
+  return data.items.map(item => {
+
+    const raw = item.fields.content?.content || [];
+
+    // Convert Rich Text safely to plain text
+    const text = raw
+      .map(block => block.content?.map(c => c.value).join("") || "")
+      .join(" ");
+
+    return {
       title: item.fields.title,
-      content: item.fields.content,
       date: item.fields.publishedDate,
-      slug: item.fields.slug
-    }));
-  }
-
-  async function renderBlogPosts() {
-    const posts = await fetchBlogPosts();
-    const container = document.getElementById("blog-container");
-    const schema = document.getElementById("blog-schema");
-
-    if(posts.length === 0) {
-      container.innerHTML = "<p style='text-align:center;'>No blog posts available at the moment.</p>";
-      return;
-    }
-
-    container.innerHTML = ""; // clear loading
-
-    const schemaPosts = [];
-
-    posts.forEach(post => {
-      const postEl = document.createElement("article");
-      postEl.style.borderBottom = "1px solid #ddd";
-      postEl.style.padding = "1rem 0";
-      // convert Contentful rich text → plain text
-
-      const text = post.content.content
-  .map(block => block.content?.map(c => c.value).join("") || "")
-  .join(" ");
-
-const excerptLength = 180;
-const excerpt = text.length > excerptLength
-  ? text.substring(0, excerptLength) + "..."
-  : text;
-
-      postEl.innerHTML = `
-  <h3 style="margin:0 0 0.5rem; color:#0a3d62;">${post.title}</h3>
-  <small>Published: ${new Date(post.date).toLocaleDateString()}</small>
-
-  <p class="excerpt">${excerpt}</p>
-  <p class="full-text" style="display:none;">${text}</p>
-
-  ${text.length > excerptLength 
-    ? `<button class="read-more" style="
-        margin-top:0.5rem;
-        background:none;
-        border:none;
-        color:#0a3d62;
-        font-weight:600;
-        cursor:pointer;
-      ">Read More</button>`
-    : ""}
-`;
-      container.appendChild(postEl);
-
-      const btn = postEl.querySelector(".read-more");
-if (btn) {
-  btn.addEventListener("click", () => {
-    const excerptP = postEl.querySelector(".excerpt");
-    const fullP = postEl.querySelector(".full-text");
-
-    const expanded = fullP.style.display === "block";
-
-    excerptP.style.display = expanded ? "block" : "none";
-    fullP.style.display = expanded ? "none" : "block";
-    btn.textContent = expanded ? "Read More" : "Read Less";
+      slug: item.fields.slug,
+      excerpt: text.substring(0, 160) + "..."
+    };
   });
 }
 
-      // Add to schema
-      schemaPosts.push({
-        "@type": "BlogPosting",
-        "headline": post.title,
-        "datePublished": post.date,
-        "url": `https://calmingcurrentsbeautyspa.com/about#${post.slug}`,
-        "author": {
-          "@type": "Person",
-          "name": "Calming Currents Beauty Spa"
-        },
-        "description": text.substring(0, 150)
-      });
-    });
 
-    // Update schema JSON
-    const schemaJson = JSON.parse(schema.innerHTML);
-    schemaJson.blogPost = schemaPosts;
-    schema.innerHTML = JSON.stringify(schemaJson);
+/* =========================
+   RENDER POSTS
+========================= */
+async function renderBlogPosts(){
+
+  const posts = await fetchBlogPosts();
+
+  const container = document.getElementById("blog-container");
+  const schemaScript = document.getElementById("blog-schema");
+
+  if(!posts.length){
+    container.innerHTML = "<p>No blog posts yet.</p>";
+    return;
   }
 
-  renderBlogPosts();
-</script>
-<!-- Blog Section End -->
-<footer>
-  <div class="container footer">
-    <p>© 2026 Calming Currents Beauty Spa | Mobile Spa Services Are Available | 391 Main Avenue, Ferndale, Randburg</p>
-    <p>WhatsApp: <a href="https://wa.me/0697507959">0697507959</a></p>
-  </div>
-</footer>
+  container.innerHTML = "";
 
-  <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/27697507959" target="_blank" id="whatsapp-button">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat on WhatsApp">
-</a>
+  const schemaPosts = [];
+
+  posts.forEach(post => {
+
+    const el = document.createElement("article");
+
+    el.innerHTML = `
+      <h3>${post.title}</h3>
+      <span class="date">${new Date(post.date).toLocaleDateString()}</span>
+      <p class="excerpt">${post.excerpt}</p>
+      <a href="/blog.html?slug=${post.slug}" class="read-more">Read More →</a>
+    `;
+
+    container.appendChild(el);
+
+
+    /* Schema entry */
+    schemaPosts.push({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "datePublished": post.date,
+      "url": `https://calmingcurrentsbeautyspa.com/blog.html?slug=${post.slug}`
+    });
+
+  });
+
+
+  /* Update schema */
+  const schemaJson = JSON.parse(schemaScript.textContent);
+  schemaJson.blogPost = schemaPosts;
+  schemaScript.textContent = JSON.stringify(schemaJson);
+}
+
+renderBlogPosts();
+</script>
+
 </body>
 </html>
