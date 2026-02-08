@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title id="meta-title">Loading...</title>
+  <meta id="meta-description" name="description" content="">
+</head>
+
+<body>
+
+<a href="/blog.html">← Back to Blog</a>
+
+<h1 id="title"></h1>
+<p id="date"></p>
+<div id="content"></div>
+
+<script>
+const SPACE_ID = "09muo917z9ra";
+const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
+
+const params = new URLSearchParams(window.location.search);
+const slug = params.get("slug");
+
+async function loadPost(){
+
+  const res = await fetch(
+    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug=${slug}`
+  );
+
+  const data = await res.json();
+
+  const item = data.items[0].fields;
+
+  const text = item.content.content
+    .map(b => b.content?.map(c => c.value).join("") || "")
+    .join("\n\n");
+
+  document.getElementById("title").innerText = item.title;
+  document.getElementById("date").innerText = new Date(item.publishedDate).toLocaleDateString();
+  document.getElementById("content").innerHTML =
+    text.split("\n\n").map(p => `<p>${p}</p>`).join("");
+
+  document.title = item.title;
+}
+
+loadPost();
+</script>
+
+</body>
+</html>
