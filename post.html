@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title id="meta-title">Loading...</title>
@@ -21,8 +21,8 @@ const params = new URLSearchParams(window.location.search);
 const slug = params.get("slug");
 
 async function loadPost() {
-  if(!slug){
-    document.getElementById("content").innerHTML = "<p>No post selected.</p>";
+  if (!slug) {
+    document.getElementById("content").innerHTML = "<p>No post selected. Please provide a slug in the URL.</p>";
     return;
   }
 
@@ -33,33 +33,43 @@ async function loadPost() {
 
     const data = await res.json();
 
-    if(!data.items.length){
-      document.getElementById("content").innerHTML = "<p>Post not found.</p>";
+    if (!data.items.length) {
+      document.getElementById("content").innerHTML = "<p>Post not found. Check the slug in the URL.</p>";
       return;
     }
 
     const item = data.items[0].fields;
 
-    // Title & date
-    document.getElementById("title").innerText = item.title || "Untitled";
+    // Title & Date
+    document.getElementById("title").innerText = item.title || "Untitled Post";
     const pubDate = item.publishedDate || new Date().toISOString();
     document.getElementById("date").innerText = new Date(pubDate).toLocaleDateString();
     document.title = item.title || "Blog Post";
 
-    // Render content
-    // Check if field is HTML or plain text
-    if(item.content){
-      // If content is already HTML
-      document.getElementById("content").innerHTML = item.content;
-    } else if(item.richText){ 
-      // If content is Rich Text JSON
-      document.getElementById("content").innerHTML = JSON.stringify(item.richText, null, 2);
-    } else {
-      document.getElementById("content").innerHTML = "<p>No content available.</p>";
+    // --- Detect content field ---
+    // Common names: content, body, postContent
+    let contentField = item.content || item.body || item.postContent || null;
+
+    if (!contentField) {
+      document.getElementById("content").innerHTML = "<p>This post has no content field.</p>";
+      return;
     }
 
-    // Add SEO schema
-    const plainText = (item.content || "").replace(/<[^>]+>/g,'').substring(0,160);
+    // Render content
+    // If it's Rich Text JSON, convert to HTML safely
+    if (typeof contentField === "object" && contentField.nodeType) {
+      // Minimal fallback: show JSON as string (replace with Rich Text renderer if needed)
+      document.getElementById("content").innerHTML = "<pre>" + JSON.stringify(contentField, null, 2) + "</pre>";
+    } else {
+      // Plain text or HTML
+      document.getElementById("content").innerHTML = contentField;
+    }
+
+    // --- BlogPosting Schema for SEO ---
+    const plainText = contentField && typeof contentField === "string"
+      ? contentField.replace(/<[^>]+>/g, '').substring(0, 160)
+      : item.title.substring(0, 160);
+
     const schema = {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
@@ -68,10 +78,15 @@ async function loadPost() {
       "datePublished": pubDate,
       "dateModified": pubDate,
       "mainEntityOfPage": window.location.href,
-      "author": {"@type":"Organization","name":"Calming Currents Beauty Spa"},
-      "publisher":{"@type":"Organization","name":"Calming Currents Beauty Spa","logo":{"@type":"ImageObject","url":"https://calmingcurrentsbeautyspa.com/images/logo.png"}}
+      "author": { "@type": "Organization", "name": "Calming Currents Beauty Spa" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Calming Currents Beauty Spa",
+        "logo": { "@type": "ImageObject", "url": "https://calmingcurrentsbeautyspa.com/images/logo.png" }
+      }
     };
 
+    // Add featured image if exists
     if(item.featuredImage?.fields?.file?.url){
       schema.image = "https:" + item.featuredImage.fields.file.url;
     }
@@ -81,9 +96,9 @@ async function loadPost() {
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
 
-  } catch(err){
+  } catch (err) {
     console.error("Error loading post:", err);
-    document.getElementById("content").innerHTML = "<p>Error loading post.</p>";
+    document.getElementById("content").innerHTML = "<p>Error loading post. Check console for details.</p>";
   }
 }
 
