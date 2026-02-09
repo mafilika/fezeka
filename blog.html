@@ -188,13 +188,28 @@ if (btn) {
         }
 
 
-    /* Schema entry */
-    schemaPosts.push({
-      "@type": "BlogPosting",
-      "headline": post.title,
-      "datePublished": post.date,
-      "url": `https://calmingcurrentsbeautyspa.com/blog.html?slug=${post.slug}`
-    });
+  schemaPosts.push({
+  "@type": "BlogPosting",
+  "headline": post.title,
+  "description": post.excerpt,
+  "datePublished": post.date,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": `https://calmingcurrentsbeautyspa.com/post.html?slug=${post.slug}`
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Calming Currents Beauty Spa"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calming Currents Beauty Spa",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
+    }
+  }
+});
 
   });
 
