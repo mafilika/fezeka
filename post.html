@@ -42,6 +42,44 @@ async function loadPost(){
   document.title = item.title;
 }
 
+/* =========================
+   ADD BLOG POST SCHEMA
+========================= */
+
+const plainText = text.substring(0, 160);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": item.title,
+  "description": plainText,
+  "datePublished": item.publishedDate,
+  "dateModified": item.publishedDate,
+  "mainEntityOfPage": window.location.href,
+  "author": {
+    "@type": "Organization",
+    "name": "Calming Currents Beauty Spa"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Calming Currents Beauty Spa",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
+    }
+  }
+};
+
+/* add image if exists */
+if(item.featuredImage?.fields?.file?.url){
+  schema.image = "https:" + item.featuredImage.fields.file.url;
+}
+
+const script = document.createElement("script");
+script.type = "application/ld+json";
+script.textContent = JSON.stringify(schema);
+document.head.appendChild(script);
+
 loadPost();
 </script>
 
