@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title id="meta-title">Loading...</title>
   <meta id="meta-description" name="description" content="">
 </head>
-
 <body>
 
 <a href="/blog.html">← Back to Blog</a>
@@ -22,16 +22,16 @@ const slug = params.get("slug");
 
 async function loadPost() {
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug[in]=${slug}`
+    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug[in]=${slug}&include=1`
   );
-  
+
   const data = await res.json();
-  
+
   if (!data.items.length) {
     document.getElementById("content").innerHTML = "<p>Post not found.</p>";
     return;
   }
-  
+
   const item = data.items[0].fields;
 
   // Set title & date
@@ -39,52 +39,43 @@ async function loadPost() {
   document.getElementById("date").innerText = new Date(item.publishedDate).toLocaleDateString();
   document.title = item.title;
 
-  // Output Code/HTML field directly
+  // Output HTML content
   document.getElementById("content").innerHTML = item.content;
-}
 
-loadPost();
-  
-</script>
+  // ====== Add BlogPosting schema ======
+  const plainText = item.content.replace(/<[^>]+>/g, '').substring(0, 160);
 
-  <script>
-/* =========================
-   ADD BLOG POST SCHEMA
-========================= */
-
-const plainText = text.substring(0, 160);
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": item.title,
-  "description": plainText,
-  "datePublished": item.publishedDate,
-  "dateModified": item.publishedDate,
-  "mainEntityOfPage": window.location.href,
-  "author": {
-    "@type": "Organization",
-    "name": "Calming Currents Beauty Spa"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Calming Currents Beauty Spa",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": item.title,
+    "description": plainText,
+    "datePublished": item.publishedDate,
+    "dateModified": item.publishedDate,
+    "mainEntityOfPage": window.location.href,
+    "author": {
+      "@type": "Organization",
+      "name": "Calming Currents Beauty Spa"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Calming Currents Beauty Spa",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
+      }
     }
+  };
+
+  if(item.featuredImage?.fields?.file?.url){
+    schema.image = "https:" + item.featuredImage.fields.file.url;
   }
-};
 
-/* add image if exists */
-if(item.featuredImage?.fields?.file?.url){
-  schema.image = "https:" + item.featuredImage.fields.file.url;
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
 }
-
-const script = document.createElement("script");
-script.type = "application/ld+json";
-script.textContent = JSON.stringify(schema);
-document.head.appendChild(script);
 
 loadPost();
 </script>
