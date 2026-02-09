@@ -78,7 +78,18 @@ async function loadPost() {
   script.textContent = JSON.stringify(schema);
   document.head.appendChild(script);
 }
+// After fetching item
+let htmlContent = '';
 
+if(item.content && item.content.nodeType) {
+  // Rich Text field
+  htmlContent = window.contentfulRichTextHtmlRenderer.documentToHtmlString(item.content);
+} else {
+  // Fallback if content is plain text/HTML
+  htmlContent = item.content || '';
+}
+
+document.getElementById("content").innerHTML = htmlContent;
 loadPost();
 </script>
 
