@@ -143,17 +143,33 @@ async function fetchBlogPosts() {
 /* =========================
    RENDER POSTS
 ========================= */
-async function renderBlogPosts(){
+async function fetchBlogPosts() {
+  try {
+    const res = await fetch(
+      `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost`
+    );
 
-  const posts = await fetchBlogPosts();
+    if (!res.ok) {
+      console.error("Contentful Error:", res.status);
+      return [];
+    }
 
-  const container = document.getElementById("blog-container");
-  const schemaScript = document.getElementById("blog-schema");
+    const data = await res.json();
+    console.log("Contentful Data:", data);
 
-  if(!posts.length){
-    container.innerHTML = "<p>No blog posts yet.</p>";
-    return;
+    if (!data.items || !data.items.length) return [];
+
+    return data.items.map(item => ({
+      title: item.fields.title,
+      date: item.fields.publishedDate,
+      slug: item.fields.slug,
+      excerpt: "Click to read full article"
+    }));
+  } catch (err) {
+    console.error("Fetch failed:", err);
+    return [];
   }
+}
 
   container.innerHTML = "";
 
