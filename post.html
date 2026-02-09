@@ -13,8 +13,6 @@
 <p id="date"></p>
 <div id="content"></div>
 
-<script src="https://unpkg.com/@contentful/rich-text-html-renderer@15.12.0/dist/rich-text-html-renderer.umd.js">
-</script>
 <script>
 const SPACE_ID = "09muo917z9ra";
 const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
@@ -23,73 +21,72 @@ const params = new URLSearchParams(window.location.search);
 const slug = params.get("slug");
 
 async function loadPost() {
-  const res = await fetch(
-    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug[in]=${slug}&include=1`
-  );
-
-  const data = await res.json();
-
-  if (!data.items.length) {
-    document.getElementById("content").innerHTML = "<p>Post not found.</p>";
+  if(!slug){
+    document.getElementById("content").innerHTML = "<p>No post selected.</p>";
     return;
   }
 
-  const item = data.items[0].fields;
+  try {
+    const res = await fetch(
+      `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug[in]=${slug}&include=1`
+    );
 
-  // Set title & date
-  document.getElementById("title").innerText = item.title;
-  document.getElementById("date").innerText = new Date(item.publishedDate).toLocaleDateString();
-  document.title = item.title;
+    const data = await res.json();
 
-  // Output HTML content
-  document.getElementById("content").innerHTML = item.content;
-
-  // ====== Add BlogPosting schema ======
-  const plainText = item.content.replace(/<[^>]+>/g, '').substring(0, 160);
-
-  const schema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "headline": item.title,
-    "description": plainText,
-    "datePublished": item.publishedDate,
-    "dateModified": item.publishedDate,
-    "mainEntityOfPage": window.location.href,
-    "author": {
-      "@type": "Organization",
-      "name": "Calming Currents Beauty Spa"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Calming Currents Beauty Spa",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
-      }
+    if(!data.items.length){
+      document.getElementById("content").innerHTML = "<p>Post not found.</p>";
+      return;
     }
-  };
 
-  if(item.featuredImage?.fields?.file?.url){
-    schema.image = "https:" + item.featuredImage.fields.file.url;
+    const item = data.items[0].fields;
+
+    // Title & date
+    document.getElementById("title").innerText = item.title || "Untitled";
+    const pubDate = item.publishedDate || new Date().toISOString();
+    document.getElementById("date").innerText = new Date(pubDate).toLocaleDateString();
+    document.title = item.title || "Blog Post";
+
+    // Render content
+    // Check if field is HTML or plain text
+    if(item.content){
+      // If content is already HTML
+      document.getElementById("content").innerHTML = item.content;
+    } else if(item.richText){ 
+      // If content is Rich Text JSON
+      document.getElementById("content").innerHTML = JSON.stringify(item.richText, null, 2);
+    } else {
+      document.getElementById("content").innerHTML = "<p>No content available.</p>";
+    }
+
+    // Add SEO schema
+    const plainText = (item.content || "").replace(/<[^>]+>/g,'').substring(0,160);
+    const schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": item.title || "Blog Post",
+      "description": plainText,
+      "datePublished": pubDate,
+      "dateModified": pubDate,
+      "mainEntityOfPage": window.location.href,
+      "author": {"@type":"Organization","name":"Calming Currents Beauty Spa"},
+      "publisher":{"@type":"Organization","name":"Calming Currents Beauty Spa","logo":{"@type":"ImageObject","url":"https://calmingcurrentsbeautyspa.com/images/logo.png"}}
+    };
+
+    if(item.featuredImage?.fields?.file?.url){
+      schema.image = "https:" + item.featuredImage.fields.file.url;
+    }
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+
+  } catch(err){
+    console.error("Error loading post:", err);
+    document.getElementById("content").innerHTML = "<p>Error loading post.</p>";
   }
-
-  const script = document.createElement("script");
-  script.type = "application/ld+json";
-  script.textContent = JSON.stringify(schema);
-  document.head.appendChild(script);
-}
-// After fetching item
-let htmlContent = '';
-
-if(item.content && item.content.nodeType) {
-  // Rich Text field
-  htmlContent = window.contentfulRichTextHtmlRenderer.documentToHtmlString(item.content);
-} else {
-  // Fallback if content is plain text/HTML
-  htmlContent = item.content || '';
 }
 
-document.getElementById("content").innerHTML = htmlContent;
 loadPost();
 </script>
 
