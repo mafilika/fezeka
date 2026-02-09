@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main pages -->
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/</loc>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/services.html</loc>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/gallery.html</loc>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/about.html</loc>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/contact.html</loc>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/blog.html</loc>
+  </url>
+
+  <!-- Blog posts -->
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/post.html?slug=first-post-slug</loc>
+    <lastmod>2026-01-20</lastmod>
+  </url>
+  <url>
+    <loc>https://calmingcurrentsbeautyspa.com/post.html?slug=second-post-slug</loc>
+    <lastmod>2026-01-28</lastmod>
+  </url>
+  <!-- Add more posts here in the same format -->
+
+</urlset>
