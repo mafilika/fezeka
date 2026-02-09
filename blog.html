@@ -1,33 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJRZNVXCH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-SXJRZNVXCH');
-</script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJRZNVXCH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SXJRZNVXCH');
+  </script>
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>Wellness Blog | Calming Currents Beauty Spa</title>
   <meta name="description" content="Massage therapy tips, wellness advice, and spa education from Calming Currents Beauty Spa Johannesburg."/>
-
-  <link rel="stylesheet" href="css/style.css">
-  
-  <!-- Blog List Schema -->
-  <script type="application/ld+json" id="blog-schema">
-  {
-    "@context": "https://schema.org",
-    "@type": "Blog",
-    "name": "Calming Currents Beauty Spa Blog",
-    "blogPost": []
-  }
-  </script>
 
   <style>
     body{
@@ -39,213 +26,148 @@
       background:#fff;
       color:#333;
     }
-
-    h2{
-      text-align:center;
-      color:#0a3d62;
-      margin-bottom:2rem;
-    }
-
-    article{
-      border-bottom:1px solid #ddd;
-      padding:1.5rem 0;
-    }
-
-    .date{
-      color:#888;
-      font-size:0.9rem;
-      margin-bottom:0.7rem;
-      display:block;
-    }
-
-    .excerpt{
-      margin-bottom:0.7rem;
-    }
-
-    .read-more{
-      color:#0a3d62;
-      font-weight:bold;
-      text-decoration:none;
-    }
-
-    .read-more:hover{
-      text-decoration:underline;
-    }
+    h2{ text-align:center; color:#0a3d62; margin-bottom:2rem; }
+    article{ border-bottom:1px solid #ddd; padding:1.5rem 0; }
+    .date{ color:#888; font-size:0.9rem; display:block; margin-bottom:0.5rem; }
+    .read-more{ color:#0a3d62; font-weight:bold; text-decoration:none; }
+    .read-more:hover{ text-decoration:underline; }
   </style>
+
+  <!-- Blog Schema -->
+  <script type="application/ld+json" id="blog-schema">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Calming Currents Beauty Spa Blog",
+    "blogPost": []
+  }
+  </script>
+
 </head>
+
 <body>
-<!-- Header -->
+
 <header>
-  <div class="container header">
-    <div class="logo">
-  <img src="https://images.ctfassets.net/09muo917z9ra/5EhOAmkNph6p93Y75Ai807/e4c70ddfdb2631d7ab2caf885019732c/Gohn-s_bakery_studio.png" alt="Calming Currents Logo">
-    </div>
-    <!-- Navigation -->
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="services.html">Services</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="about.html">Reviews</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
+  <h1 style="text-align:center;">Calming Currents Beauty Spa</h1>
 </header>
 
 <section id="blog-section">
   <h2>Wellness & Massage Blog</h2>
-
-  <div id="blog-container">
-    Loading posts...
-  </div>
+  <div id="blog-container">Loading posts...</div>
 </section>
 
+<footer style="text-align:center; margin-top:3rem;">
+  <p>© 2026 Calming Currents Beauty Spa</p>
+</footer>
 
 <script>
-  document.getElementById("blog-container").innerHTML = "JS is running";
 /* =========================
    CONTENTFUL SETTINGS
 ========================= */
 const SPACE_ID = "09muo917z9ra";
 const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
-
-
-/* =========================
-   FETCH POSTS
-========================= */
-async function fetchBlogPosts() {
-
-  const res = await fetch(
-    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&order=-fields.publishedDate`
-  );
-
-  const data = await res.json();
-
-  return data.items.map(item => {
-
-    const raw = item.fields.content?.content || [];
-
-    // Convert Rich Text safely to plain text
-    const text = raw
-      .map(block => block.content?.map(c => c.value).join("") || "")
-      .join(" ");
-
-    return {
-      title: item.fields.title,
-      date: item.fields.publishedDate,
-      slug: item.fields.slug,
-      excerpt: text.substring(0, 160) + "..."
-    };
-  });
-}
-
+const CONTENT_TYPE = "blogPost";
 
 /* =========================
-   RENDER POSTS
+   FETCH BLOG POSTS
 ========================= */
 async function fetchBlogPosts() {
   try {
     const res = await fetch(
-      `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost`
+      `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=${CONTENT_TYPE}&order=-fields.publishedDate`
     );
 
     if (!res.ok) {
-      console.error("Contentful Error:", res.status);
+      console.error("Contentful error:", res.status);
       return [];
     }
 
     const data = await res.json();
-    console.log("Contentful Data:", data);
-
     if (!data.items || !data.items.length) return [];
 
-    return data.items.map(item => ({
-      title: item.fields.title,
-      date: item.fields.publishedDate,
-      slug: item.fields.slug,
-      excerpt: "Click to read full article"
-    }));
+    return data.items.map(item => {
+      const content = item.fields.content;
+      let text = "";
+
+      if (content && content.content) {
+        text = content.content
+          .flatMap(b => b.content || [])
+          .filter(n => n.nodeType === "text")
+          .map(n => n.value)
+          .join(" ");
+      }
+
+      return {
+        title: item.fields.title || "Untitled",
+        date: item.fields.publishedDate || new Date().toISOString(),
+        slug: item.fields.slug || "",
+        excerpt: text
+          ? text.substring(0, 200) + "..."
+          : "Read full article"
+      };
+    });
+
   } catch (err) {
     console.error("Fetch failed:", err);
     return [];
   }
 }
 
+/* =========================
+   RENDER POSTS
+========================= */
+async function renderBlogPosts() {
+  const container = document.getElementById("blog-container");
+  container.innerHTML = "Fetching posts...";
+
+  const posts = await fetchBlogPosts();
+
+  if (!posts.length) {
+    container.innerHTML = "<p>No blog posts available.</p>";
+    return;
+  }
+
   container.innerHTML = "";
 
   const schemaPosts = [];
 
   posts.forEach(post => {
-
     const el = document.createElement("article");
 
     el.innerHTML = `
       <h3>${post.title}</h3>
       <span class="date">${new Date(post.date).toLocaleDateString()}</span>
-      <p class="excerpt">${post.excerpt}</p>
-      <a href="post.html?slug=${post.slug}">Read More →</a>
+      <p>${post.excerpt}</p>
+      <a href="post.html?slug=${post.slug}" class="read-more">Read More →</a>
     `;
 
     container.appendChild(el);
 
-  const btn = el.querySelector(".read-more");
-if (btn) {
-  btn.addEventListener("click", () => {
-    ...
+    schemaPosts.push({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt,
+      "datePublished": post.date,
+      "author": {
+        "@type": "Organization",
+        "name": "Calming Currents Beauty Spa"
+      }
+    });
+  });
+
+  document.getElementById("blog-schema").textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Calming Currents Beauty Spa Blog",
+    "blogPost": schemaPosts
   });
 }
 
-
-  schemaPosts.push({
-  "@type": "BlogPosting",
-  "headline": post.title,
-  "description": post.excerpt,
-  "datePublished": post.date,
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": `https://calmingcurrentsbeautyspa.com/post.html?slug=${post.slug}`
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "Calming Currents Beauty Spa"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Calming Currents Beauty Spa",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://calmingcurrentsbeautyspa.com/images/logo.png"
-    }
-  }
-});
-
-  /* Update schema */
-  schemaScript.textContent = JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  "name": "Calming Currents Beauty Spa Blog",
-  "blogPost": schemaPosts
-});
-
-renderBlogPosts();
+/* =========================
+   START AFTER DOM READY
+========================= */
+document.addEventListener("DOMContentLoaded", renderBlogPosts);
 </script>
-<footer>
-  <div class="container footer">
-    <p>© 2026 Calming Currents Beauty Spa | Mobile Spa Services Are Available | 391 Main Avenue, Ferndale, Randburg</p>
-    <p>WhatsApp: <a href="https://wa.me/0697507959">0697507959</a></p>
-  </div>
-</footer>
 
-<!-- JS -->
-<script src="js/script.js"></script>
-
-  <!-- WhatsApp Floating Button -->
-<a href="https://wa.me/27697507959" target="_blank" id="whatsapp-button">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat on WhatsApp">
-</a>
-  <script>
-  alert("JavaScript is executing");
-  </script>
 </body>
 </html>
