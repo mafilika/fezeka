@@ -14,34 +14,38 @@
 <div id="content"></div>
 
 <script>
+<script>
 const SPACE_ID = "09muo917z9ra";
 const ACCESS_TOKEN = "Z2-ybwP2VOWRp1wNWpxaaAl0P8sekgACZD-QXYDFrdw";
 
 const params = new URLSearchParams(window.location.search);
 const slug = params.get("slug");
 
-async function loadPost(){
-
+async function loadPost() {
   const res = await fetch(
-    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug=${slug}`
+    `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master/entries?access_token=${ACCESS_TOKEN}&content_type=blogPost&fields.slug[in]=${slug}`
   );
-
+  
   const data = await res.json();
-
+  
+  if (!data.items.length) {
+    document.getElementById("content").innerHTML = "<p>Post not found.</p>";
+    return;
+  }
+  
   const item = data.items[0].fields;
 
-  const text = item.content.content
-    .map(b => b.content?.map(c => c.value).join("") || "")
-    .join("\n\n");
-
+  // Set title & date
   document.getElementById("title").innerText = item.title;
   document.getElementById("date").innerText = new Date(item.publishedDate).toLocaleDateString();
-  document.getElementById("content").innerHTML =
-    text.split("\n\n").map(p => `<p>${p}</p>`).join("");
-
   document.title = item.title;
+
+  // Output Code/HTML field directly
+  document.getElementById("content").innerHTML = item.content;
 }
 
+loadPost();
+</script>
 /* =========================
    ADD BLOG POST SCHEMA
 ========================= */
