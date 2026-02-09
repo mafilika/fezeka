@@ -168,7 +168,7 @@ async function renderBlogPosts(){
       <h3>${post.title}</h3>
       <span class="date">${new Date(post.date).toLocaleDateString()}</span>
       <p class="excerpt">${post.excerpt}</p>
-      <a href="/post.html?slug=${post.slug}">Read More →</a>
+      <a href="post.html?slug=${post.fields.slug}">Read More →</a>
     `;
 
     container.appendChild(el);
