@@ -73,6 +73,7 @@
     }
   </style>
 </head>
+<body>
 <!-- Header -->
 <header>
   <div class="container header">
@@ -91,8 +92,6 @@
     </nav>
   </div>
 </header>
-
-<body>
 
 <section id="blog-section">
   <h2>Wellness & Massage Blog</h2>
@@ -168,24 +167,17 @@ async function renderBlogPosts(){
       <h3>${post.title}</h3>
       <span class="date">${new Date(post.date).toLocaleDateString()}</span>
       <p class="excerpt">${post.excerpt}</p>
-      <a href="post.html?slug=${post.fields.slug}">Read More →</a>
+      <a href="post.html?slug=${post.slug}">Read More →</a>
     `;
 
     container.appendChild(el);
 
-    const btn = el.querySelector(".read-more");
+  const btn = el.querySelector(".read-more");
 if (btn) {
   btn.addEventListener("click", () => {
-    const excerptP = postEl.querySelector(".excerpt");
-    const fullP = postEl.querySelector(".full-text");
-
-    const expanded = fullP.style.display === "block";
-
-    excerptP.style.display = expanded ? "block" : "none";
-    fullP.style.display = expanded ? "none" : "block";
-    btn.textContent = expanded ? "Read More" : "Read Less";
+    ...
   });
-        }
+}
 
 
   schemaPosts.push({
@@ -215,10 +207,12 @@ if (btn) {
 
 
   /* Update schema */
-  const schemaJson = JSON.parse(schemaScript.textContent);
-  schemaJson.blogPost = schemaPosts;
-  schemaScript.textContent = JSON.stringify(schemaJson);
-}
+  schemaScript.textContent = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Calming Currents Beauty Spa Blog",
+  "blogPost": schemaPosts
+});
 
 renderBlogPosts();
 </script>
