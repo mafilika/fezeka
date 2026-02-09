@@ -43,44 +43,46 @@
 <section class="container booking-section">
   <h2 class="center">Book Your Service</h2>
   <p class="center">Please fill out the form below. Your selected service is pre-filled.</p>
+<form id="bookingForm" class="booking-form" action="https://formspree.io/f/mqaylnwg" method="POST">
 
-  <form id=bookingForm" class="booking-form">
-  <form id="bookingForm" action="https://formspree.io/f/mqaylnwg" method="POST">
-    <label for="serviceSelect">Service</label>
-    <select id="serviceSelect" name="service" required>
-      <option value="">— Choose a service —</option>
-      <option value="head-massage">Head and Neck Massage — 45min</option>
-      <option value="full-body">Full Body Exfoliation — 60min</option>
-      <option value="gel-soak">Gel Soak Off — 60min</option>
-      <option value="gents-manicure">Gents Manicure and Pedicure — 60min -R499.00</option>
-      <option value="deep-cleansing">Deep Facial Cleansing — 60min</option>
-      <option value="deep-tissue">Deep Tissue Massage — 60min -R699.00</option>
-      <option value="manicure">Manicure and Pedicure — 45min</option>
-      <option value="aromatherapy-massage">Aromatherapy Massage — 60min -R550.00</option>
-      <option value="back-exfoliation">Body Exfoliation — 60min</option>
-      <option value="cupping">Cupping Massage — 60min</option>
-    </select>
-    
-    <label for="date">Preferred Date:</label>
-    <input type="date" id="date" name="date" required>
+  <label for="serviceSelect">Service</label>
+  <select id="serviceSelect" name="service" required>
+    <option value="">— Choose a service —</option>
+    <option value="head-massage">Head and Neck Massage — 45min</option>
+    <option value="full-body">Full Body Exfoliation — 60min</option>
+    <option value="gel-soak">Gel Soak Off — 60min</option>
+    <option value="gents-manicure">Gents Manicure and Pedicure — 60min -R499.00</option>
+    <option value="deep-cleansing">Deep Facial Cleansing — 60min</option>
+    <option value="deep-tissue">Deep Tissue Massage — 60min -R699.00</option>
+    <option value="manicure">Manicure and Pedicure — 45min</option>
+    <option value="aromatherapy-massage">Aromatherapy Massage — 60min -R550.00</option>
+    <option value="back-exfoliation">Body Exfoliation — 60min</option>
+    <option value="cupping">Cupping Massage — 60min</option>
+  </select>
 
-    <label for="time">Preferred Time:</label>
-    <input type="time" id="time" name="time" required>
+  <label for="date">Preferred Date:</label>
+  <input type="date" id="date" name="date" required>
 
-    <label for="name">Full Name:</label>
-    <input type="text" id="name" name="name" placeholder="Your Name" required>
+  <label for="time">Preferred Time:</label>
+  <input type="time" id="time" name="time" required>
 
-    <label for="phone">Phone Number:</label>
-    <input type="text" id="phone" name="phone" placeholder="Your Phone" required>
+  <label for="name">Full Name:</label>
+  <input type="text" id="name" name="name" required>
 
-    <label for="address">Address:</label>
-    <input type="text" id="address" name="address" placeholder="Your Address" required>
+  <label for="phone">Phone Number:</label>
+  <input type="text" id="phone" name="phone" required>
 
-    <p><strong>Call-Out Fee For Mobile Service:</strong> R200.00</p>
+  <label for="address">Address:</label>
+  <input type="text" id="address" name="address" required>
 
-    <button type="submit" class="btn btn-primary">Confirm Booking</button>
-    <a href="https://wa.me/27697507959" id="whatsapp-btn" class="btn btn-outline">Book via WhatsApp</button>
-  </form>
+  <p><strong>Call-Out Fee For Mobile Service:</strong> R200.00</p>
+
+  <button type="submit" class="btn btn-primary">Confirm Booking</button>
+
+  <a href="https://wa.me/27697507959" id="whatsapp-btn" class="btn btn-outline">Book via WhatsApp</a>
+
+   </form>
+  
   <script>
     // --- 1) read ?service= from the URL
     const params = new URLSearchParams(window.location.search);
