@@ -106,10 +106,31 @@ async function fetchPost(){
   /* ===============================
      CONVERT CONTENTFUL RICH TEXT
   ================================= */
-  const text = content.content
-    .map(block => block.content?.map(c => c.value).join("") || "")
-    .join("\n\n");
+  let html = "";
 
+content.content.forEach(block => {
+
+  // TEXT PARAGRAPHS
+  if(block.nodeType === "paragraph"){
+    const text = block.content.map(c => c.value || "").join("");
+    html += `<p>${text}</p>`;
+  }
+
+  // IMAGES
+  if(block.nodeType === "embedded-asset-block"){
+    const assetId = block.data.target.sys.id;
+
+    const asset = data.includes.Asset.find(a => a.sys.id === assetId);
+
+    if(asset){
+      const url = "https:" + asset.fields.file.url;
+      const alt = asset.fields.title || "";
+
+      html += `<img src="${url}" alt="${alt}" style="width:100%;margin:20px 0;border-radius:8px;">`;
+    }
+  }
+
+});
 
   /* ===============================
      INJECT INTO PAGE
