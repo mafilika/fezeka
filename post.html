@@ -139,9 +139,7 @@ content.content.forEach(block => {
   document.getElementById("post-date").innerText =
     new Date(date).toLocaleDateString();
 
-  document.getElementById("post-content").innerHTML =
-    text.split("\n\n").map(p => `<p>${p}</p>`).join("");
-
+  document.getElementById("post-content").innerHTML = html;
 
   /* ===============================
      DYNAMIC SEO
