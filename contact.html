@@ -65,5 +65,29 @@
 <a href="https://wa.me/27697507959" target="_blank" id="whatsapp-button">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="Chat on WhatsApp">
 </a>
+
+<script>
+function sendToWhatsApp(e){
+  e.preventDefault();
+
+  var name = document.getElementById("name").value;
+  var email = document.getElementById("email").value;
+  var phone = document.getElementById("phone").value;
+  var message = document.getElementById("message").value;
+
+  var fullMessage = 
+  "New Contact Form Message:%0A%0A" +
+  "Name: " + name + "%0A" +
+  "Email: " + email + "%0A" +
+  "Phone: " + phone + "%0A" +
+  "Message: " + message;
+
+  var whatsappNumber = "27697507959";
+
+  var url = "https://wa.me/" + whatsappNumber + "?text=" + fullMessage;
+
+  window.open(url, "_blank");
+}
+</script>
 </body>
 </html>
