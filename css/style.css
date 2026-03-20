@@ -437,64 +437,65 @@ footer a:hover {
   font-weight:600;
   color:#264B38;
                              }
-.cinematic-section {
-  width: 100%;
+.cinematic-wrapper {
+  padding: 80px 20px;
+  background: #f5f5f5;
 }
 
+/* EACH BLOCK */
 .scene {
   position: relative;
-  height: 100vh;
+  height: 80vh;
+  margin: 60px auto; /* 🔥 SPACE BETWEEN IMAGES */
+  border-radius: 25px; /* 🔥 SOFT LUXURY EDGES */
   overflow: hidden;
+  max-width: 1200px; /* 🔥 NOT FULL WIDTH = PREMIUM */
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15); /* 🔥 FLOATING EFFECT */
 }
 
+/* IMAGE */
 .scene img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.1);
   transition: transform 1.5s ease;
 }
 
-/* Dark overlay */
+/* OVERLAY */
 .scene::after {
   content: "";
   position: absolute;
   width: 100%;
   height: 100%;
+  background: rgba(0,0,0,0.35);
   top: 0;
   left: 0;
-  background: rgba(0,0,0,0.4);
 }
 
-/* Text */
+/* TEXT */
 .scene-text {
   position: absolute;
-  top: 50%;
-  left: 10%;
-  transform: translateY(50px);
-  color: #fff;
-  max-width: 500px;
-  opacity: 0;
-  transition: all 1s ease;
+  bottom: 40px;
+  left: 40px;
+  color: white;
   z-index: 2;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease;
 }
 
 .scene-text h2 {
-  font-size: 40px;
+  font-size: 32px;
   font-family: 'Playfair Display', serif;
 }
 
-.scene-text p {
-  margin: 15px 0;
-  font-size: 16px;
-}
-
-/* ACTIVE STATE */
+/* ANIMATION */
 .scene.active img {
-  transform: scale(1);
+  transform: scale(1.05);
 }
 
 .scene.active .scene-text {
   opacity: 1;
   transform: translateY(0);
-  }
+}
