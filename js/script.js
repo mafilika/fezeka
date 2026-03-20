@@ -86,3 +86,20 @@ if (selectedService && priceMap[selectedService]) {
   }
 });
 
+
+const scenes = document.querySelectorAll('.scene');
+
+function checkScroll() {
+  const triggerBottom = window.innerHeight * 0.8;
+
+  scenes.forEach(scene => {
+    const sceneTop = scene.getBoundingClientRect().top;
+
+    if (sceneTop < triggerBottom) {
+      scene.classList.add('active');
+    }
+  });
+}
+
+window.addEventListener('scroll', checkScroll);
+
