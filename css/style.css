@@ -499,3 +499,8 @@ footer a:hover {
   opacity: 1;
   transform: translateY(0);
 }
+
+.scene-text {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
