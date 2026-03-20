@@ -657,5 +657,145 @@ function addOptions(options) {
   });
 }
 </script>
+
+<style>
+.popup {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 320px;
+  background: #fff;
+  color: #0b3d2e;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: none;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  z-index: 9999;
+  animation: slideUp 0.5s ease;
+}
+
+.header {
+  background: linear-gradient(135deg, #0f5c45, #0b3d2e);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.body {
+  padding: 16px;
+  text-align: center;
+}
+
+.btn {
+  display: block;
+  background: #0b3d2e;
+  color: white;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.close {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+@keyframes slideUp {
+  from {opacity:0; transform:translateY(40px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+
+<!-- POPUP 1: GUARANTEE -->
+<div id="popup1" class="popup">
+  <div class="header">💚 Risk-Free Guarantee <span class="close" onclick="closePopup('popup1')">✖</span></div>
+  <div class="body">
+    If you don’t feel relaxed, lighter & refreshed…
+    <br><br>
+    👉 You don’t pay.
+    <br><br>
+    <a class="btn" href="https://wa.me/27697507959?text=Hi%20I%20want%20the%20risk-free%20massage">
+      Book Risk-Free
+    </a>
+  </div>
+</div>
+
+<!-- POPUP 2: SCROLL ENGAGEMENT -->
+<div id="popup2" class="popup">
+  <div class="header">😣 Still Feeling Tense? <span class="close" onclick="closePopup('popup2')">✖</span></div>
+  <div class="body">
+    Back or neck pain doesn’t go away on its own.
+    <br><br>
+    We fix it in 60 minutes.
+    <br><br>
+    <a class="btn" href="https://wa.me/27697507959?text=Hi%20I%20need%20pain%20relief%20massage">
+      Get Relief Now
+    </a>
+  </div>
+</div>
+
+<!-- POPUP 3: EXIT INTENT -->
+<div id="popup3" class="popup">
+  <div class="header">🚨 Wait Before You Go <span class="close" onclick="closePopup('popup3')">✖</span></div>
+  <div class="body">
+    We still have 2 slots left today.
+    <br><br>
+    Book now or miss out.
+    <br><br>
+    <a class="btn" href="https://wa.me/27697507959?text=Hi%20I%20want%20to%20book%20today">
+      Secure My Spot
+    </a>
+  </div>
+</div>
+
+<script>
+// SHOW ONLY ONCE EACH
+let shown = {
+  popup1: false,
+  popup2: false,
+  popup3: false
+};
+
+// POPUP 1 - TIME
+setTimeout(() => {
+  if (!localStorage.getItem("p1")) {
+    showPopup("popup1");
+    localStorage.setItem("p1", "true");
+  }
+}, 5000);
+
+// POPUP 2 - SCROLL
+window.addEventListener("scroll", () => {
+  let scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  if (scrollPercent > 40 && !localStorage.getItem("p2")) {
+    showPopup("popup2");
+    localStorage.setItem("p2", "true");
+  }
+});
+
+// POPUP 3 - EXIT
+document.addEventListener("mouseleave", function(e) {
+  if (e.clientY < 10 && !localStorage.getItem("p3")) {
+    showPopup("popup3");
+    localStorage.setItem("p3", "true");
+  }
+});
+
+// FUNCTIONS
+function showPopup(id) {
+  document.getElementById(id).style.display = "block";
+}
+
+function closePopup(id) {
+  document.getElementById(id).style.display = "none";
+}
+</script>
 </body>
 </html>
