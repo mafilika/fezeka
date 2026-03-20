@@ -103,3 +103,19 @@ function checkScroll() {
 
 window.addEventListener('scroll', checkScroll);
 
+const scenes = document.querySelectorAll('.scene');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+    }
+  });
+}, {
+  threshold: 0.3
+});
+
+scenes.forEach(scene => {
+  observer.observe(scene);
+});
+
