@@ -504,3 +504,14 @@ footer a:hover {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
+
+.btn {
+  display: block;
+  background: #0b3d2e;
+  color: white;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
