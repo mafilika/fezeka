@@ -174,5 +174,202 @@ content.content.forEach(block => {
 fetchPost();
 </script>
 
+  
+<style>
+#chatbot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  background: #0b3d2e;
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+  display: none;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+#chat-header {
+  background: #0f5c45;
+  padding: 12px;
+  font-weight: bold;
+}
+
+#chat-body {
+  padding: 15px;
+}
+
+.msg {
+  margin-bottom: 10px;
+  animation: fadeIn 0.5s ease;
+}
+
+.option {
+  display: block;
+  background: white;
+  color: #0b3d2e;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.option:hover {
+  background: #d4f5e9;
+}
+
+#close {
+  float: right;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(10px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+
+<div id="chatbot">
+  <div id="chat-header">
+    💆 Instant Relief Booking
+    <span id="close">✖</span>
+  </div>
+  <div id="chat-body"></div>
+</div>
+
+<script>
+let chatbot = document.getElementById("chatbot");
+let chatBody = document.getElementById("chat-body");
+let triggered = false;
+
+function showChatbot() {
+  if (!triggered) {
+    chatbot.style.display = "block";
+    startConversation();
+    triggered = true;
+  }
+}
+
+// TRIGGERS
+setTimeout(showChatbot, 7000);
+
+window.addEventListener("scroll", () => {
+  let scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  if (scrollPercent > 35) showChatbot();
+});
+
+document.addEventListener("mouseleave", function(e) {
+  if (e.clientY < 10) showChatbot();
+});
+
+document.getElementById("close").onclick = () => chatbot.style.display = "none";
+
+// FLOW
+function startConversation() {
+    addMessage("Back or neck pain? 😣");
+
+  setTimeout(() => {
+    addMessage("We can relieve it in just 60 minutes — even at your home.");
+  }, 1200);
+
+  setTimeout(() => {
+    addOptions([
+      {text: "I need pain relief now", action: stepPain},
+      {text: "Do you come to me?", action: stepMobile},
+      {text: "Show prices", action: stepPrice}
+    ]);
+  }, 2200);
+}
+
+function stepPain() {
+  chatBody.innerHTML = "";
+  addMessage("You're not alone — most clients come in stressed or in pain.");
+
+  setTimeout(() => {
+    addMessage("⚠️ Only 2 slots left today.");
+  }, 1200);
+
+  setTimeout(() => {
+    addOptions([
+      {
+        text: "Book at spa",
+        link: "https://wa.me/27697507959?text=Hi%20I%20want%20to%20book%20a%20pain%20relief%20massage%20today"
+      },
+      {
+        text: "Book at my home",
+        link: "https://wa.me/27697507959?text=Hi%20I%20want%20a%20mobile%20massage%20at%20my%20location"
+      }
+    ]);
+  }, 2200);
+}
+
+function stepMobile() {
+  chatBody.innerHTML = "";
+  addMessage("Yes 💚 we offer mobile massage services.");
+
+  setTimeout(() => {
+    addMessage("We come to your home, set up & help you fully relax.");
+  }, 1200);
+
+  setTimeout(() => {
+    addOptions([
+      {
+        text: "Book home service",
+        link: "https://wa.me/27697507959?text=Hi%20I%20want%20to%20book%20a%20massage%20at%20my%20home"
+      },
+      {
+        text: "Ask questions",
+        link: "https://wa.me/27697507959?text=Hi%20I%20want%20to%20know%20more%20about%20your%20mobile%20service"
+      }
+    ]);
+  }, 2200);
+}
+
+function stepPrice() {
+  chatBody.innerHTML = "";
+  addMessage("Our massages are affordable & focused on real results.");
+
+  setTimeout(() => {
+    addOptions([
+      {
+        text: "Send me prices",
+        link: "https://wa.me/27697507959?text=Hi%20please%20send%20me%20your%20massage%20prices"
+      },
+      {
+        text: "Which one is best for pain?",
+        action: stepPain
+      }
+    ]);
+  }, 1500);
+}
+
+// HELPERS
+function addMessage(text) {
+  let msg = document.createElement("div");
+  msg.className = "msg";
+  msg.innerHTML = text;
+  chatBody.appendChild(msg);
+}
+
+function addOptions(options) {
+  options.forEach(opt => {
+    let btn = document.createElement("div");
+    btn.className = "option";
+    btn.innerText = opt.text;
+
+    if (opt.link) {
+      btn.onclick = () => window.location.href = opt.link;
+    } else {
+      btn.onclick = opt.action;
+    }
+
+    chatBody.appendChild(btn);
+  });
+}
+</script>
+  
 </body>
   </html>
