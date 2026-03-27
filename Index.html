@@ -663,73 +663,113 @@ popup-header {
 </div>
 
 <!-- POPUP 2: SCROLL ENGAGEMENT -->
-<div id="popup2" class="popup">
-  <div class="popup-header">😣 Still Feeling Tense? <span class="close" onclick="closePopup('popup2')">✖</span></div>
-  <div class="body">
-    Back or neck pain doesn’t go away on its own.
-    <br><br>
-    We fix it in 60 minutes.
-    <br><br>
-    <a class="btn" href="https://wa.me/27697507959?text=Hi%20I%20need%20pain%20relief%20massage">
-      Get Relief Now
-    </a>
-  </div>
-</div>
+<!-- POPUP -->
+<style>
+.popup {
+  position: fixed;
+  bottom: 110px;
+  right: 20px;
+  width: 320px;
+  max-width: 90%;
+  background: #fff;
+  color: #0b3d2e;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  display: none;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  z-index: 9999;
+  animation: slideUp 0.5s ease;
+}
 
-<!-- POPUP 3: EXIT INTENT -->
-<div id="popup3" class="popup">
-  <div class="popup-header">🚨 Wait Before You Go <span class="close" onclick="closePopup('popup3')">✖</span></div>
-  <div class="body">
-    We still have 2 slots left today.
-    <br><br>
-    Book now or miss out.
-    <br><br>
-    <a class="btn" href="https://wa.me/27697507959?text=Hi%20I%20want%20to%20book%20today">
-      Secure My Spot
+.popup-header {
+  background: linear-gradient(135deg, #0f5c45, #0b3d2e);
+  color: white;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
+  position: relative;
+}
+
+.popup-close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+}
+
+.popup-body {
+  padding: 15px;
+  text-align: center;
+}
+
+.popup-btn {
+  display: block;
+  background: #0b3d2e;
+  color: white;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.popup-btn:hover {
+  background: #0f5c45;
+}
+
+/* MOBILE FRIENDLY */
+@media (max-width: 480px) {
+  .popup {
+    right: 5%;
+    left: 5%;
+    width: auto;
+    bottom: 100px;
+  }
+}
+
+/* ANIMATION */
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>
+
+<div class="popup" id="promoPopup">
+  <div class="popup-header">
+    Limited Offer 💆
+    <span class="popup-close" onclick="closePopup()">✖</span>
+  </div>
+
+  <div class="popup-body">
+    <strong>If you don’t feel relaxed, lighter & refreshed…</strong><br><br>
+    👉 You don’t pay.
+
+    <a class="popup-btn"
+       href="https://wa.me/27697507959?text=Hi%20I%20want%20to%20book%20a%20massage">
+       Book Now on WhatsApp
     </a>
   </div>
 </div>
 
 <script>
-// SHOW ONLY ONCE EACH
-let shown = {
-  popup1: false,
-  popup2: false,
-  popup3: false
-};
-
-// POPUP 1 - TIME
-setTimeout(() => {
-  if (!localStorage.getItem("p1")) {
-    showPopup("popup1");
-    localStorage.setItem("p1", "true");
-  }
-}, 5000);
-
-// POPUP 2 - SCROLL
-window.addEventListener("scroll", () => {
-  let scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-  if (scrollPercent > 40 && !localStorage.getItem("p2")) {
-    showPopup("popup2");
-    localStorage.setItem("p2", "true");
-  }
-});
-
-// POPUP 3 - EXIT
-document.addEventListener("mouseleave", function(e) {
-  if (e.clientY < 10 && !localStorage.getItem("p3")) {
-    showPopup("popup3");
-    localStorage.setItem("p3", "true");
-  }
-});
-
-// FUNCTIONS
-function showPopup(id) {
-  document.getElementById(id).style.display = "block";
+// SHOW AFTER 5s (and only once)
+if (!localStorage.getItem("popupShown")) {
+  setTimeout(() => {
+    document.getElementById("promoPopup").style.display = "block";
+    localStorage.setItem("popupShown", "true");
+  }, 5000);
 }
 
-function closePopup(id) {
-  document.getElementById(id).style.display = "none";
+// CLOSE FUNCTION
+function closePopup() {
+  document.getElementById("promoPopup").style.display = "none";
 }
 </script>
 </body>
